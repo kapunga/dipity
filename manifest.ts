@@ -17,6 +17,22 @@ export const UserConfDatastore = DefineDatastore({
   },
 });
 
+export const AvailabilityDatastore = DefineDatastore({
+  name: "availability",
+  primary_key: "user_id",
+  attributes: {
+    user_id: {
+      type: Schema.types.string,
+    },
+    availability_type: {
+      type: Schema.types.string,
+    },
+    metadata: {
+      type: Schema.types.string,
+    },
+  },
+});
+
 /**
  * The app manifest contains the app's configuration. This
  * file defines attributes like app name and description.
