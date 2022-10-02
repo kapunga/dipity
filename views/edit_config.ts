@@ -83,26 +83,22 @@ export const renderEditConfigView = (
  * we can't include it in `initial_users` or the modal will fail to load.
  */
 const partnerSelectElement = (preferredPartners: string[]) => {
+  const element = {
+    "type": "multi_users_select",
+    "placeholder": {
+      "type": "plain_text",
+      "text": "Select users",
+      "emoji": true,
+    },
+    "action_id": "preferred_partners",
+  };
+
   if (preferredPartners && preferredPartners.length > 0) {
     return {
-      "type": "multi_users_select",
-      "placeholder": {
-        "type": "plain_text",
-        "text": "Select users",
-        "emoji": true,
-      },
+      ...element,
       "initial_users": preferredPartners,
-      "action_id": "preferred_partners",
     };
   } else {
-    return {
-      "type": "multi_users_select",
-      "placeholder": {
-        "type": "plain_text",
-        "text": "Select users",
-        "emoji": true,
-      },
-      "action_id": "preferred_partners",
-    };
+    return element;
   }
 };
