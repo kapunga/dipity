@@ -7,21 +7,21 @@ export enum AvailabilityTypes {
 export type OpenAvailability = {
   user_id: string;
   looking_for_me: boolean;
-  until: number;
+  until: bigint;
   availability_type: AvailabilityTypes.ANYONE;
 };
 
 export type PartnerListAvailability = {
   user_id: string;
   partners_user_ids: string[];
-  until: number;
+  until: bigint;
   availability_type: AvailabilityTypes.PARTNER_LIST;
 };
 
 export type ChannelAvailability = {
   user_id: string;
   channel_id: string;
-  until: number;
+  until: bigint;
   availability_type: AvailabilityTypes.CHANNEL_MEMBER;
 };
 

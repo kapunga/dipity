@@ -1,3 +1,4 @@
+import { SlackAPIClient } from "deno-slack-sdk/types.ts";
 import {
   Availability,
   AvailabilityTypes,
@@ -5,12 +6,13 @@ import {
   OpenAvailability,
   PartnerListAvailability,
 } from "../lib/lib_availability.ts";
+import { printError } from "../lib/lib_error.ts";
 
 export type DSAvailability = {
   user_id: string;
   availability_type: string;
   metadata: string;
-  until: number;
+  until: bigint;
 };
 
 export const fromDsAvailability = (dsa: DSAvailability): Availability => {
@@ -65,3 +67,38 @@ export const toDsAvailability = (a: Availability): DSAvailability => {
       };
   }
 };
+
+export default class AvailabilityDatastore {
+  private static readonly DATASTORE_NAME = "availability";
+
+  static getAll = async (
+    client: SlackAPIClient,
+  ): Promise<Array<Availability>> => {
+    console.log("[AvailabilityDatastore.getAll]");
+    const result = await client.apps.datastore.query({
+      datastore: this.DATASTORE_NAME,
+    });
+    if (!result.ok) throw new Error(printError(result));
+    const now = Date.now();
+    const availabilities = result.items.map((dsa) => {
+      const ds_availability = dsa as DSAvailability;
+      return fromDsAvailability(ds_availability);
+    }).filter((a) => a.until < now);
+    return availabilities;
+  };
+
+  // TODO Purge function that clears out all expired availabilities.
+
+  static put = async (
+    client: SlackAPIClient,
+    availability: Availability,
+  ): Promise<void> => {
+    const ds_availability = toDsAvailability(availability);
+    console.log("[AvailabilityDatastore.put]", ds_availability);
+    const result = await client.apps.datastore.put({
+      datastore: this.DATASTORE_NAME,
+      item: ds_availability,
+    });
+    if (!result.ok) throw new Error(printError(result));
+  };
+}

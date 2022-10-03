@@ -14,6 +14,9 @@ export const UserConfDatastore = DefineDatastore({
     preferred_partners: {
       type: Schema.types.string,
     },
+    until: {
+      type: Schema.types.integer,
+    },
   },
 });
 
@@ -47,6 +50,11 @@ export default Manifest({
   outgoingDomains: [],
   botScopes: [
     "commands",
+    // "channels.manage",
+    // "channels.read",
+    // "groups:write",
+    // "mpim:write",
+    // "users:read",
     "chat:write",
     "chat:write.public",
     "datastore:read",
