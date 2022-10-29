@@ -15,3 +15,5 @@ online, _Dipity_ is an attempt to gain back some of what is lost in a move to
 remote-first.
 
 ## Thesis: It's a Problem of Signaling
+
+Signalling is tricky.
